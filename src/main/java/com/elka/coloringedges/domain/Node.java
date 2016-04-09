@@ -1,4 +1,4 @@
-package controller;
+package com.elka.coloringedges.domain;
 
 public class Node {
 
