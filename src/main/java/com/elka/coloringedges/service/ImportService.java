@@ -7,8 +7,9 @@ import java.io.File;
 @Service
 public class ImportService {
 
-    File parseFile(File inputFile) {
-        File parsedFile = inputFile;
-        return parsedFile;
+    public File parseFile(File inputFile) {
+        //TODO finish this
+        return inputFile;
     }
+
 }

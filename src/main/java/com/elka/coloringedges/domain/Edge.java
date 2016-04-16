@@ -2,57 +2,27 @@ package com.elka.coloringedges.domain;
 
 public class Edge {
 
-    private Long id;
-    private String name;
-    private Node sourceNode;
-    private Node destinationNode;
-    private Long color;
+    private Vertex sourceVertex, destinationVertex;
+    private int color;
 
-    public Edge(Long id, String name, Node sourceNode, Node destinationNode, Long color) {
-        this.id = id;
-        this.name = name;
-        this.sourceNode = sourceNode;
-        this.destinationNode = destinationNode;
-        this.color = color;
+    public Edge(Vertex v1, Vertex v2) {
+        this.sourceVertex = v1;
+        this.destinationVertex = v2;
     }
 
-    public Long getId() {
-        return id;
+    public Vertex getSourceVertex() {
+        return sourceVertex;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Vertex getDestinationVertex() {
+        return destinationVertex;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Node getSourceNode() {
-        return sourceNode;
-    }
-
-    public void setSourceNode(Node sourceNode) {
-        this.sourceNode = sourceNode;
-    }
-
-    public Node getDestinationNode() {
-        return destinationNode;
-    }
-
-    public void setDestinationNode(Node destinationNode) {
-        this.destinationNode = destinationNode;
-    }
-
-    public Long getColor() {
+    public int getColor() {
         return color;
     }
 
-    public void setColor(Long color) {
+    public void setColor(int color) {
         this.color = color;
     }
 }
