@@ -7,8 +7,13 @@ public class Graph {
 
     private List<Vertex> vertices = new ArrayList<>();
     private List<Edge> edges = new ArrayList<>();
+    private int maxColors;
 
     public Graph() {}
+
+    public Graph(int maxColors) {
+        this.maxColors = maxColors;
+    }
 
     public void addEdge(Long v1, Long v2) {
         Vertex sourceVertex = null;
@@ -52,5 +57,13 @@ public class Graph {
             vertexWithHighestDegree = vertex.getNeighbours().size() > vertexWithHighestDegree.getNeighbours().size() ? vertex : vertexWithHighestDegree;
         }
         return vertexWithHighestDegree;
+    }
+
+    public int getMaxColors() {
+        return maxColors;
+    }
+
+    public void setMaxColors(int maxColors) {
+        this.maxColors = maxColors;
     }
 }
