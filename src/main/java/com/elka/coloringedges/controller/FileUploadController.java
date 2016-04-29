@@ -49,7 +49,7 @@ public class FileUploadController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/upload")
     String handleFileUpload(@RequestParam("file") MultipartFile file,
-                                   RedirectAttributes redirectAttributes) {
+                            RedirectAttributes redirectAttributes) {
 
         String originalFileName = file.getOriginalFilename();
         if(!file.isEmpty()) {

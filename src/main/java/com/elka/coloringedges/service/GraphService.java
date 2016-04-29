@@ -19,13 +19,38 @@ public class GraphService {
 
     public Graph buildGraph(MultipartFile file) throws IOException {
         Scanner input = new Scanner(file.getInputStream());
+        return buildGraph(input);
+    }
+
+    public Graph buildGraph(String fileContents) throws IOException {
+        Scanner input = new Scanner(fileContents);
+        return buildGraph(input);
+    }
+
+    public Graph buildGraph(Scanner scannerInput){
         Graph graph = new Graph();
-        while (input.hasNextLine()) {
-            long sourceVertex = input.nextLong();
-            long destinationVertex = input.nextLong();
-            graph.addEdge(sourceVertex, destinationVertex);
+        boolean hasDefinedMaxColors = false;
+
+        try {
+            while (scannerInput.hasNextLine()) {
+                String foundInLine = scannerInput.findInLine("Colors: (\\d+)");
+                if (!hasDefinedMaxColors && foundInLine != null){
+                    hasDefinedMaxColors = true;
+                    int numberOfColors = Integer.parseInt(foundInLine.substring("Colors: ".length()));
+                    graph.setMaxColors(numberOfColors);
+                } else {
+                    long sourceVertex = scannerInput.nextLong();
+                    long destinationVertex = scannerInput.nextLong();
+                    graph.addEdge(sourceVertex, destinationVertex);
+                }
+                scannerInput.nextLine();
+            }
+        } catch (Exception e) {
+            log.info("Could not build graph, error parsing file: " + e);
+        } finally {
+            if(!hasDefinedMaxColors) graph.setMaxColors(graph.getVertexWithHighestDegree().getDegree() - 1);
+            scannerInput.close();
         }
-        input.close();
         return graph;
     }
 }
