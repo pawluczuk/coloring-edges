@@ -1,12 +1,13 @@
 package com.elka.coloringedges.domain;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Graph {
 
-    private List<Vertex> vertices = new ArrayList<>();
-    private List<Edge> edges = new ArrayList<>();
+    private Set<Vertex> vertices = new HashSet<>();
     private int maxColors;
 
     public Graph() {}
@@ -37,26 +38,44 @@ public class Graph {
             vertices.add(destinationVertex);
         }
 
+        Edge newEdge = new Edge(sourceVertex, destinationVertex);
         sourceVertex.addNeighbour(destinationVertex);
         destinationVertex.addNeighbour(sourceVertex);
-        edges.add(new Edge(sourceVertex, destinationVertex));
+        sourceVertex.addEdge(newEdge);
+        destinationVertex.addEdge(newEdge);
     }
 
-    public List<Vertex> getVertices() {
+    public Set<Vertex> getVertices() {
         return vertices;
     }
 
-    public List<Edge> getEdges() {
+    public Set<Edge> getEdges() {
+        Set<Edge> edges = new HashSet<>();
+        for(Vertex vertex : this.getVertices()) {
+            vertex.getEdges();
+            edges.addAll(vertex.getEdges());
+        }
         return edges;
     }
 
     public Vertex getVertexWithHighestDegree() {
         Vertex vertexWithHighestDegree = new Vertex();
-        List<Vertex> vertices = this.getVertices();
+        Set<Vertex> vertices = this.getVertices();
         for (Vertex vertex : vertices) {
             vertexWithHighestDegree = vertex.getNeighbours().size() > vertexWithHighestDegree.getNeighbours().size() ? vertex : vertexWithHighestDegree;
         }
         return vertexWithHighestDegree;
+    }
+
+    public Edge getEdgeWithMaxColor() {
+        List<Edge> edges = new ArrayList<>(this.getEdges());
+        Edge edgeWithMaxColor = edges.get(0);
+        for (Vertex vertex: this.getVertices()) {
+            for (Edge edge: vertex.getEdges()) {
+                edgeWithMaxColor = edge.getColor() > edgeWithMaxColor.getColor() ? edge : edgeWithMaxColor;
+            }
+        }
+        return edgeWithMaxColor;
     }
 
     public int getMaxColors() {

@@ -3,9 +3,18 @@ package com.elka.coloringedges.domain;
 public class Edge {
 
     private Vertex sourceVertex, destinationVertex;
-    private int color;
+    private Integer color = -1;
+
+    public Edge() {}
 
     public Edge(Vertex v1, Vertex v2) {
+        this.color = -1;
+        this.sourceVertex = v1;
+        this.destinationVertex = v2;
+    }
+
+    public Edge(Vertex v1, Vertex v2, Integer color) {
+        this.color = color;
         this.sourceVertex = v1;
         this.destinationVertex = v2;
     }
@@ -18,11 +27,11 @@ public class Edge {
         return destinationVertex;
     }
 
-    public int getColor() {
+    public Integer getColor() {
         return color;
     }
 
-    public void setColor(int color) {
+    public void setColor(Integer color) {
         this.color = color;
     }
 }

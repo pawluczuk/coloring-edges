@@ -1,6 +1,8 @@
 package com.elka.coloringedges;
 
+import com.elka.coloringedges.domain.Edge;
 import com.elka.coloringedges.domain.Graph;
+import com.elka.coloringedges.domain.Vertex;
 import com.elka.coloringedges.service.GraphService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -23,10 +25,8 @@ public class GraphServiceTest extends Assert {
 
         assertEquals(4, graph.getVertices().size());
         assertEquals(3, graph.getEdges().size());
-        assertTrue((long) 1 == graph.getEdges().get(0).getSourceVertex().getId());
-        assertTrue((long) 2 == graph.getEdges().get(0).getDestinationVertex().getId());
-        assertTrue((long) 3 == graph.getEdges().get(1).getSourceVertex().getId());
-        assertTrue((long) 2 == graph.getEdges().get(1).getDestinationVertex().getId());
+        assertTrue(graph.getEdges().contains(new Edge(new Vertex((long) 1), new Vertex((long) 2))));
+        assertTrue(graph.getEdges().contains(new Edge(new Vertex((long) 3), new Vertex((long) 2))));
     }
 
     @Test
@@ -41,7 +41,7 @@ public class GraphServiceTest extends Assert {
         GraphService graphService = new GraphService();
         graph = graphService.buildGraph(inputValues);
 
-        assertTrue((long) 2 == graph.getVertexWithHighestDegree().getDegree());
+        assertEquals((long) 2, graph.getVertexWithHighestDegree().getDegree());
     }
 
     @Test
@@ -57,7 +57,7 @@ public class GraphServiceTest extends Assert {
         GraphService graphService = new GraphService();
         graph = graphService.buildGraph(inputValues);
 
-        assertTrue((long) 6 == graph.getMaxColors());
+        assertEquals((long) 6, graph.getMaxColors());
     }
 
 
@@ -74,7 +74,7 @@ public class GraphServiceTest extends Assert {
         GraphService graphService = new GraphService();
         graph = graphService.buildGraph(inputValues);
 
-        assertTrue((long) 6 == graph.getMaxColors());
+        assertEquals((long) 6, graph.getMaxColors());
     }
 
     @Test
@@ -90,8 +90,23 @@ public class GraphServiceTest extends Assert {
         GraphService graphService = new GraphService();
         graph = graphService.buildGraph(inputValues);
 
-        assertTrue((long) 6 == graph.getMaxColors());
+        assertEquals((long) 6, graph.getMaxColors());
     }
 
+    @Test
+    public void shouldColorGraph() {
+        GraphService graphService = new GraphService();
+        Graph graph = new Graph();
+        graph.addEdge((long) 1, (long) 2);
+        graph.addEdge((long) 1, (long) 3);
+        graph.addEdge((long) 1, (long) 4);
+        graph.addEdge((long) 2, (long) 5);
+        graph.addEdge((long) 2, (long) 6);
+
+        graph = graphService.colorEdges(graph);
+
+        assertEquals(new Integer(3), (graph.getEdgeWithMaxColor().getColor()));
+        //albo int 2, zaleznie jak pojdzie algorytmowi :F
+    }
 
 }

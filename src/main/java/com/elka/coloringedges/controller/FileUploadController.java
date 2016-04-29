@@ -55,6 +55,9 @@ public class FileUploadController {
         if(!file.isEmpty()) {
             try {
                 Graph graph = graphService.buildGraph(file);
+                graph = graphService.colorEdges(graph);
+                log.info("Max graph colors provided by user: " + graph.getMaxColors());
+                log.info("Max graph colors calculated: " + graph.getEdgeWithMaxColor().getColor());
 
                 redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + originalFileName + "!");
             }

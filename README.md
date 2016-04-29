@@ -22,7 +22,7 @@ divided by white space and new edges divided by new line as such:
     2 4
 
 providing a line such as
-    
+
     Color: 234
 
 within the upload file will define the number of colors to be used while
