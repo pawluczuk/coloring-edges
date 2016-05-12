@@ -1,5 +1,8 @@
 package com.elka.coloringedges.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties({"sourceVertex", "destinationVertex"})
 public class Edge {
 
     private Vertex sourceVertex, destinationVertex;

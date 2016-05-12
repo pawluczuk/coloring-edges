@@ -1,33 +1,31 @@
+<!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Coloring edges</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
 <body>
 
-	<div th:if="${message}">
-		<h2 th:text="${message}"/>
-	</div>
+    <div th:if="${message}">
+        <h2 th:text="${message}"/>
+    </div>
 
-	<div>
-		<form method="POST" enctype="multipart/form-data" action="/upload">
-			<table>
-				<tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
-				<tr><td></td><td><input type="submit" value="Upload" /></td></tr>
-			</table>
-		</form>
-	</div>
+    <div>
+        <form method="POST" enctype="multipart/form-data" action="/upload">
+            <table>
+                <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
+                <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
+            </table>
+        </form>
+    </div>
 
-	<div>
-		<ul>
-			<li th:each="file : ${files}" th:text="${file}"></li>
-			<!--<li th:each="file : ${graph.}" th:text="${file}"></li>-->
-		</ul>
-	</div>
-
-	<div th:if="${data}">
-		<h3>Graph info</h3>
-		<p th:text="${data.numberOfVertices}"/>
-		<p th:text="${data.numberOfEdges}"/>
-		<p th:text="${data.highestDegreeVertex.id}"/>
-		<p th:text="${data.highestDegreeVertex.degree}"/>
-	</div>
+    <div th:if="${data}">
+        <h3>Graph info</h3>
+        <p th:text="${data.numberOfVertices}"/>
+        <p th:text="${data.numberOfEdges}"/>
+        <p th:text="${data.highestDegreeVertex.id}"/>
+        <p th:text="${data.highestDegreeVertex.degree}"/>
+    </div>
 
 </body>
 </html>

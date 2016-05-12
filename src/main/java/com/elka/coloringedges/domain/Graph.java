@@ -1,10 +1,13 @@
 package com.elka.coloringedges.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@JsonIgnoreProperties({"getEdges"})
 public class Graph {
 
     private Set<Vertex> vertices = new HashSet<>();
@@ -26,6 +29,7 @@ public class Graph {
                 destinationVertex = currentVertex;
             }
         }
+        //disables option to make multi graph
         if(sourceVertex != null && destinationVertex != null)
             return;
 

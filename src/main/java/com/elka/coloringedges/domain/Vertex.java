@@ -1,7 +1,10 @@
 package com.elka.coloringedges.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.*;
 
+@JsonIgnoreProperties({"neighbours"})
 public class Vertex {
 
     private Long id;
