@@ -26,7 +26,7 @@ public class FileUploadController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/upload")
     public String provideUploadInfo() {
-        return "uploadForm";
+        return "index";
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/upload")
