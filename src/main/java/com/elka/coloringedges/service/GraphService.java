@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
@@ -55,13 +56,12 @@ public class GraphService {
     }
 
     public Graph colorEdges(Graph graph) {
-
         for (Vertex vertex : graph.getVertices()) {
             for (Edge edge : vertex.getEdges()) {
-                Integer i = 0;
-                Set<Integer> colorsSet = edge.getSourceVertex().getUsedColors();
-                colorsSet.addAll(edge.getDestinationVertex().getUsedColors());
-                if(edge.getColor() == -1) {
+                if (edge.getColor() == -1) {
+                    Integer i = 1;
+                    Set<Integer> colorsSet = edge.getSourceVertex().getUsedColors();
+                    colorsSet.addAll(edge.getDestinationVertex().getUsedColors());
                     while (colorsSet.contains(i)) {
                         i++;
                     }
@@ -70,7 +70,6 @@ public class GraphService {
                 }
             }
         }
-
         return graph;
     }
 }

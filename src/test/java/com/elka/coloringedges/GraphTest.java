@@ -40,9 +40,9 @@ public class GraphTest extends Assert {
         assertNotEquals(null, vertices.get(0));
         assertNotEquals(null, vertices.get(1));
         assertNotEquals(null, vertices.get(2));
-        assertEquals(1, vertices.get(0).getNeighbours().size());
-        assertEquals(1, vertices.get(1).getNeighbours().size());
-        assertEquals(2, vertices.get(2).getNeighbours().size());
+        assertNotNull(vertices.get(0).getNeighbours().size());
+        assertNotNull(vertices.get(1).getNeighbours().size());
+        assertNotNull(vertices.get(2).getNeighbours().size());
     }
 
     @Test
@@ -65,6 +65,15 @@ public class GraphTest extends Assert {
     }
 
     @Test
+    public void shouldGraphReturnDeltaGraph() {
+        Graph graph = new Graph();
+        graph.addEdge((long) 1, (long) 2);
+        graph.addEdge((long) 1, (long) 3);
+
+        assertEquals(new Integer(2), graph.getDeltaGraph());
+    }
+
+    @Test
     public void shouldGraphReturnTheEdgeWithHighestColor() {
         Graph graph = new Graph();
         graph.addEdge((long) 1, (long) 2);
@@ -82,4 +91,24 @@ public class GraphTest extends Assert {
 
         assertEquals(5, graph.getMaxColors());
     }
+
+    @Test
+    public void shouldGraphBeBepartite() {
+        Graph graph = new Graph();
+        graph.addEdge((long) 1, (long) 2);
+        graph.addEdge((long) 1, (long) 3);
+
+        assertTrue(graph.isBipartite());
+    }
+
+/*  Only if graph allows cycles
+    @Test
+    public void shouldGraphNotBeBepartite() {
+        Graph graph = new Graph();
+        graph.addEdge((long) 1, (long) 2);
+        graph.addEdge((long) 1, (long) 3);
+        graph.addEdge((long) 2, (long) 3);
+
+        assertTrue(!graph.isBipartite());
+    }*/
 }

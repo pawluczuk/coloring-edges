@@ -2,10 +2,7 @@ package com.elka.coloringedges.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @JsonIgnoreProperties({"getEdges"})
 public class Graph {
@@ -29,7 +26,7 @@ public class Graph {
                 destinationVertex = currentVertex;
             }
         }
-        //disables option to make multi graph
+        //disables option to create cycles
         if(sourceVertex != null && destinationVertex != null)
             return;
 
@@ -71,6 +68,10 @@ public class Graph {
         return vertexWithHighestDegree;
     }
 
+    public Integer getDeltaGraph() {
+        return this.getVertexWithHighestDegree().getDegree();
+    }
+
     public Edge getEdgeWithMaxColor() {
         List<Edge> edges = new ArrayList<>(this.getEdges());
         Edge edgeWithMaxColor = edges.get(0);
@@ -88,5 +89,30 @@ public class Graph {
 
     public void setMaxColors(int maxColors) {
         this.maxColors = maxColors;
+    }
+
+    public boolean isBipartite() {
+        Iterator i = this.getVertices().iterator();
+        int iterator = 0;
+        while(i.hasNext()) {
+            Vertex source = (Vertex) i.next();
+
+            if(iterator == 0) {
+                source.setColor(0);
+            }
+
+            int currentColor = source.getColor();
+
+            for (Vertex v : source.getNeighbours()) {
+                if(v.getColor() == currentColor) {
+                    return false;
+                }
+                if(v.getColor() == -1) {
+                    v.setColor((currentColor + 1) % 2);
+                }
+            }
+            iterator++;
+        }
+        return true;
     }
 }

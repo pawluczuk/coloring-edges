@@ -1,4 +1,4 @@
-var width = 960,
+/*var width = 960,
     height = 500;
 
 var force = d3.layout.force()
@@ -67,4 +67,43 @@ d3.json("data.json", function(error, graph) {
         .on('mouseover', tip.show)
         .on('mouseout', tip.hide);
   });
-});
+});*/
+
+(function() {
+    "use strict";
+
+    var btn = document.getElementById('upload-btn'),
+        picBox = document.getElementById('picbox'),
+        errBox = document.getElementById('errormsg');
+
+    var uploader = new ss.SimpleUpload({
+        button: btn,
+        url: 'upload',
+        name: 'file',
+        multiple: true,
+        multipart: true,
+        maxUploads: 2,
+        maxSize: 1024,
+        queue: false,
+        allowedExtensions: ['txt'],
+        accept: '.txt',
+        debug: true,
+        hoverClass: 'btn-hover',
+        focusClass: 'active',
+        disabledClass: 'disabled',
+        responseType: 'json',
+        onSizeError: function () {
+            errBox.innerHTML = 'Files may not exceed 1024K.';
+        },
+        onExtError: function () {
+            errBox.innerHTML = 'Invalid file type. Please select a TXT file.';
+        },
+        onComplete: function (file, response) {
+            if (!response) {
+                errBox.innerHTML = 'Unable to upload file';
+            } else {
+                picBox.innerHTML = response;
+            }
+        }
+    });
+}());

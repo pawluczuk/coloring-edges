@@ -1,8 +1,6 @@
 package com.elka.coloringedges;
 
-import com.elka.coloringedges.domain.Edge;
 import com.elka.coloringedges.domain.Graph;
-import com.elka.coloringedges.domain.Vertex;
 import com.elka.coloringedges.service.GraphService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,8 +8,6 @@ import org.junit.Test;
 import java.io.IOException;
 
 public class GraphServiceTest extends Assert {
-    //TODO fix all the tests
-
     @Test
     public void shouldParseInputFile() throws IOException {
         String inputValues = "1 2\n" +
@@ -101,10 +97,11 @@ public class GraphServiceTest extends Assert {
         graph.addEdge((long) 1, (long) 4);
         graph.addEdge((long) 2, (long) 5);
         graph.addEdge((long) 2, (long) 6);
+        graph.addEdge((long) 2, (long) 7);
 
         graph = graphService.colorEdges(graph);
 
-        assertEquals(new Integer(2), (graph.getEdgeWithMaxColor().getColor()));
+        assertEquals(new Integer(4), (graph.getEdgeWithMaxColor().getColor()));
     }
 
 }

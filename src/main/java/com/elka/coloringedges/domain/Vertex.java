@@ -10,6 +10,7 @@ public class Vertex {
     private Long id;
     private List<Vertex> neighbours = new ArrayList<>();
     private Set<Edge> edges = new HashSet<>();
+    private int color = -1;
 
     public Vertex() {
         this.id = new Random().nextLong();
@@ -55,5 +56,13 @@ public class Vertex {
             colorSet.add(edge.getColor());
         }
         return colorSet;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 }
