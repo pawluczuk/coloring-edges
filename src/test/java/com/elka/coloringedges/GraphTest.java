@@ -25,8 +25,6 @@ public class GraphTest extends Assert {
 
         List<Vertex> vertices = new ArrayList<>(graph.getVertices());
 
-        assertTrue(vertices.contains(new Vertex((long) 1)));
-        assertTrue(vertices.contains(new Vertex((long) 2)));
         assertEquals(1, vertices.get(0).getNeighbours().size());
         assertEquals(1, vertices.get(1).getNeighbours().size());
     }
@@ -43,25 +41,8 @@ public class GraphTest extends Assert {
         assertNotEquals(null, vertices.get(1));
         assertNotEquals(null, vertices.get(2));
         assertEquals(1, vertices.get(0).getNeighbours().size());
-        assertEquals(2, vertices.get(1).getNeighbours().size());
-        assertEquals(1, vertices.get(2).getNeighbours().size());
-    }
-
-    @Test
-    public void shouldAddingMultipleEdgesShouldAddNeighbours2() {
-        Graph graph = new Graph();
-        graph.addEdge((long) 1, (long) 2);
-        graph.addEdge((long) 3, (long) 2);
-        graph.addEdge((long) 2, (long) 1);
-        graph.addEdge((long) 1, (long) 4);
-        graph.addEdge((long) 3, (long) 2);
-
-        List<Vertex> vertices = new ArrayList<>(graph.getVertices());
-
-        assertEquals(2, vertices.get(0).getNeighbours().size());
-        assertEquals(2, vertices.get(1).getNeighbours().size());
-        assertEquals(1, vertices.get(2).getNeighbours().size());
-        assertEquals(1, vertices.get(3).getNeighbours().size());
+        assertEquals(1, vertices.get(1).getNeighbours().size());
+        assertEquals(2, vertices.get(2).getNeighbours().size());
     }
 
     @Test

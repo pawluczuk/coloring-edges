@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -26,7 +27,7 @@ public class GraphService {
         return buildGraph(input);
     }
 
-    public Graph buildGraph(Scanner scannerInput) {
+    private Graph buildGraph(Scanner scannerInput) {
         Graph graph = new Graph();
         boolean hasDefinedMaxColors = false;
 
@@ -55,14 +56,11 @@ public class GraphService {
 
     public Graph colorEdges(Graph graph) {
 
-        Set<Vertex> vertices = graph.getVertices();
-        for (Vertex vertex : vertices) {
-            Set<Integer> colorsSet = vertex.getUsedColors();
-            for (Vertex ver : vertex.getNeighbours()){
-                colorsSet.addAll(ver.getUsedColors());
-            }
-            Integer i = 0;
+        for (Vertex vertex : graph.getVertices()) {
             for (Edge edge : vertex.getEdges()) {
+                Integer i = 0;
+                Set<Integer> colorsSet = edge.getSourceVertex().getUsedColors();
+                colorsSet.addAll(edge.getDestinationVertex().getUsedColors());
                 if(edge.getColor() == -1) {
                     while (colorsSet.contains(i)) {
                         i++;
