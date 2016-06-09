@@ -28,38 +28,23 @@
 </nav>
 
 <div class="container">
+    <div class="col-md-8">
+        <div class="content-box">
+            <input type="button" id="upload-btn" class="btn btn-primary btn-large clearfix" value="Choose file"/>
+            <span style="padding-left:5px;vertical-align:middle;"><i>TXT file (max size 1024)</i></span>
 
-    <div class="jumbotron">
-        <div th:if="${message}">
-            <h2 th:text="${message}"/>
+            <div id="errormsg" class="clearfix redtext" style="padding-top: 10px;"></div>
+            <div class="clear-line" style="margin-top:10px;"></div>
         </div>
-
-        <div class="col-md-8">
-            <div class="content-box">
-                <input type="button" id="upload-btn" class="btn btn-primary btn-large clearfix" value="Choose file"/>
-                <span style="padding-left:5px;vertical-align:middle;"><i>TXT file (max size 1024)</i></span>
-
-                <div id="errormsg" class="clearfix redtext" style="padding-top: 10px;"></div>
-
-                <div id="picbox" class="clear" style="padding-top:0px;padding-bottom:10px;"></div>
-
-                <div class="clear-line" style="margin-top:10px;"></div>
-            </div>
-        </div>
-    </div>
-
-    <div th:if="${data}">
-        <h3>Graph info</h3>
-        <p th:text="${data.numberOfVertices}"/>
-        <p th:text="${data.numberOfEdges}"/>
-        <p th:text="${data.highestDegreeVertex.id}"/>
-        <p th:text="${data.highestDegreeVertex.degree}"/>
     </div>
 </div>
 
-<script src="//d3js.org/d3.v3.min.js"></script>
-<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<div class="container" id="picbox"></div>
+
+<script th:src="@{/js/lib/d3.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/lib/d3tip.js}" type="text/javascript"></script>
 <script th:src="@{/js/lib/jquery.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/lib/underscore.min.js}" type="text/javascript"></script>
 <script th:src="@{/js/lib/SimpleAjaxUploader.min.js}" type="text/javascript"></script>
 <script th:src="@{/js/lib/bootstrap.min.js}" type="text/javascript"></script>
 <script th:src="@{/js/src/script.js}" type="text/javascript"></script>

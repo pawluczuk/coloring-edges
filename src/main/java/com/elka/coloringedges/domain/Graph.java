@@ -19,15 +19,16 @@ public class Graph {
     public void addEdge(Long v1, Long v2) {
         Vertex sourceVertex = null;
         Vertex destinationVertex = null;
-        for (Vertex currentVertex : vertices) {
+        for (Vertex currentVertex : this.vertices) {
             if (v1.equals(currentVertex.getId())) {
                 sourceVertex = currentVertex;
-            } else if (v2.equals(currentVertex.getId())) {
+            }
+            if (v2.equals(currentVertex.getId())) {
                 destinationVertex = currentVertex;
             }
         }
-        //disables option to create cycles
-        if(sourceVertex != null && destinationVertex != null)
+
+        if(sourceVertex == destinationVertex)
             return;
 
         if(sourceVertex == null){
@@ -104,7 +105,7 @@ public class Graph {
             int currentColor = source.getColor();
 
             for (Vertex v : source.getNeighbours()) {
-                if(v.getColor() == currentColor) {
+                if(v.getColor() == currentColor && currentColor != -1) {
                     return false;
                 }
                 if(v.getColor() == -1) {

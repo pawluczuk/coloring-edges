@@ -1,6 +1,5 @@
 package com.elka.coloringedges.controller;
 
-import com.elka.coloringedges.domain.Edge;
 import com.elka.coloringedges.domain.Graph;
 import com.elka.coloringedges.service.GraphService;
 import com.elka.coloringedges.service.ImportService;
@@ -39,7 +38,7 @@ public class FileUploadController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/upload")
     public @ResponseBody Graph handleFileUpload(@RequestParam("file") MultipartFile file,
-                           RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes) {
 
         String originalFileName = file.getOriginalFilename();
         if(!file.isEmpty()) {
@@ -60,6 +59,15 @@ public class FileUploadController {
                         .map(edge -> edge.getSourceVertex().getId() + " " + edge.getDestinationVertex().getId() + " " + edge.getColor())
                         .collect(Collectors.toList()));
                 Path outputFile = Paths.get("output.txt");
+
+                Path csvFile = Paths.get("target/classes/static/output.csv");
+                List<String> csvLines = new ArrayList<>();
+                csvLines.add("SourceVertex,DestinationVertex,Color");
+                csvLines.addAll(graph.getEdges().stream()
+                        .map(edge -> edge.getSourceVertex().getId() + "," + edge.getDestinationVertex().getId() + "," + edge.getColor())
+                        .collect(Collectors.toList()));
+
+                Files.write(csvFile, csvLines, Charset.forName("UTF-8"));
                 Files.write(outputFile, fileLines, Charset.forName("UTF-8"));
                 return graph;
             }

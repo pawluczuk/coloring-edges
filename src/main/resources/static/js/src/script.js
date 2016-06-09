@@ -1,76 +1,129 @@
-/*var width = 960,
-    height = 500;
+(function(d3, $, _) {
+    function enableD3JS(fileName, selector, response) {
+        "use strict";
 
-var force = d3.layout.force()
-    .charge(-200)
-    .linkDistance(30)
-    .size([width, height]);
+        var colors = response.edgeWithMaxColor.color;
+        var nodesNo = response.vertices.length;
 
-var svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height);
+        var width = 1200,
+            height = 550;
 
-var tip = d3.tip()
-    .attr('class', 'd3-tip')
-    .offset([-10, 0])
-    .html(function(d) {
-      return "<strong>Node:</strong> <span style='color:red'>" + d.name + "</span>";
-    });
+        var force = d3.layout.force()
+            .charge(-200)
+            .linkDistance(900/nodesNo)
+            .size([width, height])
+            .linkStrength(0.1)
+            .friction(0.9)
+            .gravity(0.1)
+            .theta(0.8)
+            .alpha(0.1)
+            .start();
 
-var colorScale = function(colorsNo) {
-    if (colorsNo <= 10)
-      return d3.scale.category10();
-    else if (colorsNo <= 20)
-      return d3.scale.category20();
-    else 
-      // fix colors
-      return d3.scale.linear().range(['#9467bd', '#fdd0a2']);
-};
+        selector = selector || '#picbox';
+        var svg = d3.select(selector).append("svg")
+            .attr("width", width)
+            .attr("height", height);
 
-svg.call(tip);
+        var tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 0])
+            .html(function(d) {
+                return "<strong>Node:</strong> <span style='color:red'>" + d.id + "</span>";
+            });
 
-d3.json("data.json", function(error, graph) {
-  if (error) throw error;
+        var tip1 = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([0, 0])
+            .html(function(d) {
+                return "<strong>Color:</strong> <span style='color:red'>" + d.color + "</span>";
+            });
 
-  var color = colorScale(graph.colorsNo);
+        var colorScale = function(colorsNo) {
+            if (colorsNo <= 10)
+                return d3.scale.category10();
+            else if (colorsNo <= 20)
+                return d3.scale.category20();
+            else
+            // fix colors
+                return d3.scale.linear()
+                    .domain([1,colorsNo])
+                    .range(['#ECECEC', 'black']);
+        };
 
-  force
-      .nodes(graph.nodes)
-      .links(graph.edges)
-      .start();
+        svg.call(tip);
+        svg.call(tip1);
 
-  var link = svg.selectAll(".link")
-      .data(graph.edges)
-    .enter().append("line")
-      .attr("class", "link")
-      .style("stroke-width", function(d) { return Math.sqrt(d.value); });
+        d3.csv(fileName, function(d) {
+            return {
+                source: d.SourceVertex,
+                target: d.DestinationVertex,
+                color: d.Color
+            }
+        }, function(error, graph) {
+            if (error) throw error;
 
-  var node = svg.selectAll(".node")
-      .data(graph.nodes)
-    .enter().append("circle")
-      .attr("class", "node")
+            var uni = [];
+            for (i = 0; i < graph.length; i++) {
+                uni = _.union(uni, [graph[i].source], [graph[i].target]);
+            }
 
-      .call(force.drag);
+            var nodes = [];
+            for(i = 0; i < uni.length; i++) {
+                nodes.push({id: uni[i]});
+            }
 
-  node.append("title")
-      .text(function(d) { return d.name; });
+            for (var i = 0; i < graph.length; i++) {
+                graph[i].source = translateToIndex(nodes, graph[i].source);
+                graph[i].target = translateToIndex(nodes, graph[i].target);
+            }
+            var color = colorScale(colors);
 
-  force.on("tick", function() {
-    link.attr("x1", function(d) { return d.source.x; })
-        .attr("y1", function(d) { return d.source.y; })
-        .attr("x2", function(d) { return d.target.x; })
-        .attr("y2", function(d) { return d.target.y; })
-        .style("stroke", function(d) { return color(d.color); });
+            force
+                .nodes(nodes)
+                .links(graph)
+                .start();
 
-    node.attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; })
-        .on('mouseover', tip.show)
-        .on('mouseout', tip.hide);
-  });
-});*/
+            var link = svg.selectAll(".link")
+                .data(graph)
+                .enter().append("line")
+                .attr("class", "link")
+                .style("stroke-width", function(d) { return Math.sqrt(d.value); });
 
-(function() {
-    "use strict";
+            var node = svg.selectAll(".node")
+                .data(nodes)
+                .enter().append("circle")
+                .attr('r', 5)
+                .attr("class", "node")
+                .call(force.drag);
+
+            node.append("title")
+                .text(function(d) { return d.id; });
+
+            force.on("tick", function() {
+                link.attr("x1", function(d) { return d.source.x; })
+                    .attr("y1", function(d) { return d.source.y; })
+                    .attr("x2", function(d) { return d.target.x; })
+                    .attr("y2", function(d) { return d.target.y; })
+                    .style("stroke", function(d) { return color(d.color); })
+                    .on('mouseover', tip1.show)
+                    .on('mouseout', tip1.hide);
+
+                node.attr("cx", function(d) { return d.x; })
+                    .attr("cy", function(d) { return d.y; })
+                    .on('mouseover', tip.show)
+                    .on('mouseout', tip.hide);
+            });
+        });
+    }
+
+    function translateToIndex(array, input) {
+        "use strict";
+
+        for (var i = 0; i < array.length; i++) {
+            if (parseInt(array[i].id) === parseInt(input))
+                return i;
+        }
+    }
 
     var btn = document.getElementById('upload-btn'),
         picBox = document.getElementById('picbox'),
@@ -102,8 +155,14 @@ d3.json("data.json", function(error, graph) {
             if (!response) {
                 errBox.innerHTML = 'Unable to upload file';
             } else {
-                picBox.innerHTML = response;
+                picBox.innerHTML = '<div class="col-md-12">' +
+                    '<a class="btn btn-warning" href="/output.csv" role="button">Download</a>' +
+                    'Number of vertices: ' + response.vertices.length +
+                    ' Number of edges: ' + response.edges.length +
+                    ' Number of colors: ' + response.edgeWithMaxColor.color +
+                    ' Delta(G): ' + response.deltaGraph + '</div>';
+                enableD3JS('output.csv', '#picbox', response);
             }
         }
     });
-}());
+})(d3, $, _);
