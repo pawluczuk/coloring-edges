@@ -7,10 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.Objects;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
 @Service
@@ -30,26 +27,28 @@ public class GraphService {
 
     private Graph buildGraph(Scanner scannerInput) {
         Graph graph = new Graph();
-        boolean hasDefinedMaxColors = false;
 
         try {
             while (scannerInput.hasNextLine()) {
-                String foundInLine = scannerInput.findInLine("Colors: (\\d+)");
-                if (!hasDefinedMaxColors && foundInLine != null) {
-                    hasDefinedMaxColors = true;
+                try {
+                    String foundInLine = scannerInput.findInLine("Colors: (\\d+)");
                     int numberOfColors = Integer.parseInt(foundInLine.substring("Colors: ".length()));
                     graph.setMaxColors(numberOfColors);
-                } else {
+                } catch(NoSuchElementException | NullPointerException e) {
                     long sourceVertex = scannerInput.nextLong();
                     long destinationVertex = scannerInput.nextLong();
                     graph.addEdge(sourceVertex, destinationVertex);
+                } finally {
+                    scannerInput.nextLine();
                 }
-                scannerInput.nextLine();
             }
         } catch (Exception e) {
             log.info("Could not build graph, error parsing file: " + e);
         } finally {
-            if (!hasDefinedMaxColors) graph.setMaxColors(graph.getVertexWithHighestDegree().getDegree() - 1);
+            if (graph.getMaxColors() == -1){
+                int deltaG = graph.getDeltaGraph();
+                graph.setMaxColors(graph.isBipartite() ? deltaG : deltaG + 1);
+            }
             scannerInput.close();
         }
         return graph;

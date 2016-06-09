@@ -8,7 +8,7 @@ import java.util.*;
 public class Graph {
 
     private Set<Vertex> vertices = new HashSet<>();
-    private int maxColors;
+    private int maxColors = -1;
 
     public Graph() {}
 
@@ -22,14 +22,10 @@ public class Graph {
         for (Vertex currentVertex : this.vertices) {
             if (v1.equals(currentVertex.getId())) {
                 sourceVertex = currentVertex;
-            }
-            if (v2.equals(currentVertex.getId())) {
+            } else if (v2.equals(currentVertex.getId())) {
                 destinationVertex = currentVertex;
             }
         }
-
-        if(sourceVertex == destinationVertex)
-            return;
 
         if(sourceVertex == null){
             sourceVertex = new Vertex(v1);
@@ -39,6 +35,9 @@ public class Graph {
             destinationVertex = new Vertex(v2);
             vertices.add(destinationVertex);
         }
+
+        if(sourceVertex == destinationVertex)
+            return;
 
         Edge newEdge = new Edge(sourceVertex, destinationVertex);
         sourceVertex.addNeighbour(destinationVertex);
