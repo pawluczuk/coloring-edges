@@ -44,7 +44,11 @@ public class FileUploadController {
         if(!file.isEmpty()) {
             try {
                 Graph graph = graphService.buildGraph(file);
+                long startTime = System.nanoTime();
                 graph = graphService.colorEdges(graph);
+                long endTime = System.nanoTime();
+                long duration = (endTime - startTime) / 1000000 ;
+                log.info("Coloring time: " + duration);
                 log.info("Max graph colors provided by user: " + graph.getMaxColors());
                 log.info("Max graph colors calculated: " + graph.getEdgeWithMaxColor().getColor());
 
@@ -54,6 +58,7 @@ public class FileUploadController {
                 fileLines.add("Edges: " + graph.getEdges().size());
                 fileLines.add("Delta(G): " + graph.getDeltaGraph());
                 fileLines.add("Used colors: " + graph.getEdgeWithMaxColor().getColor());
+                fileLines.add("Execution time: " + duration + "ms");
 
                 fileLines.addAll(graph.getEdges().stream()
                         .map(edge -> edge.getSourceVertex().getId() + " " + edge.getDestinationVertex().getId() + " " + edge.getColor())
