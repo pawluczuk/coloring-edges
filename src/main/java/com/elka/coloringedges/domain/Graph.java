@@ -27,6 +27,9 @@ public class Graph {
             }
         }
 
+        if(sourceVertex != null && destinationVertex != null && sourceVertex.getNeighbours().contains(destinationVertex))
+            return;
+
         if(sourceVertex == null){
             sourceVertex = new Vertex(v1);
             vertices.add(sourceVertex);
