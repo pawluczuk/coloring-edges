@@ -136,7 +136,6 @@
         multiple: true,
         multipart: true,
         maxUploads: 2,
-        maxSize: 1024,
         queue: false,
         allowedExtensions: ['txt'],
         accept: '.txt',
@@ -145,9 +144,6 @@
         focusClass: 'active',
         disabledClass: 'disabled',
         responseType: 'json',
-        onSizeError: function () {
-            errBox.innerHTML = 'Files may not exceed 1024K.';
-        },
         onExtError: function () {
             errBox.innerHTML = 'Invalid file type. Please select a TXT file.';
         },

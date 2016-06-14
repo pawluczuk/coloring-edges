@@ -44,6 +44,7 @@ public class FileUploadController {
         if(!file.isEmpty()) {
             try {
                 Graph graph = graphService.buildGraph(file);
+                log.info("Got graph to color!");
                 long startTime = System.nanoTime();
                 graph = graphService.colorEdges(graph);
                 long endTime = System.nanoTime();
