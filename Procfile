@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar target/coloring-edges.jar
+web: java -Dserver.port=$PORT -jar target/coloring-edges-0.0.1-SNAPSHOT.jar
