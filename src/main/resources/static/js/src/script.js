@@ -152,12 +152,12 @@
                 errBox.innerHTML = 'Unable to upload file';
             } else {
                 picBox.innerHTML = '<div class="col-md-12">' +
-                    '<a class="btn btn-warning" href="/output.csv" role="button">Download</a>' +
+                    '<a class="btn btn-warning" href="/output" role="button">Download</a>' +
                     'Number of vertices: ' + response.vertices.length +
                     ' Number of edges: ' + response.edges.length +
                     ' Number of colors: ' + response.edgeWithMaxColor.color +
                     ' Delta(G): ' + response.deltaGraph + '</div>';
-                enableD3JS('output.csv', '#picbox', response);
+                 enableD3JS('upload-dir/output.csv', '#picbox', response);
             }
         }
     });

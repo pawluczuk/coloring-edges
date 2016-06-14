@@ -1,9 +1,12 @@
 package com.elka.coloringedges.controller;
 
+import com.elka.coloringedges.Application;
 import com.elka.coloringedges.domain.Graph;
 import com.elka.coloringedges.service.GraphService;
 import com.elka.coloringedges.service.ImportService;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,6 +15,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -64,9 +72,9 @@ public class FileUploadController {
                 fileLines.addAll(graph.getEdges().stream()
                         .map(edge -> edge.getSourceVertex().getId() + " " + edge.getDestinationVertex().getId() + " " + edge.getColor())
                         .collect(Collectors.toList()));
-                Path outputFile = Paths.get("output.txt");
+                Path outputFile = Paths.get(Application.ROOT + "/output.txt");
 
-                Path csvFile = Paths.get("target/classes/static/output.csv");
+                Path csvFile = Paths.get(Application.ROOT + "/output.csv");
                 List<String> csvLines = new ArrayList<>();
                 csvLines.add("SourceVertex,DestinationVertex,Color");
                 csvLines.addAll(graph.getEdges().stream()
@@ -87,4 +95,17 @@ public class FileUploadController {
         return null;
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/output")
+    public void handleCSVDownload(HttpServletResponse response) throws IOException{
+        InputStream is = new FileInputStream(Application.ROOT+"/output.csv");
+        IOUtils.copy(is, response.getOutputStream());
+        response.flushBuffer();
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/output_txt")
+    public void handleTXTDownload(HttpServletResponse response) throws IOException{
+        InputStream is = new FileInputStream(Application.ROOT+"/output.txt");
+        IOUtils.copy(is, response.getOutputStream());
+        response.flushBuffer();
+    }
 }
