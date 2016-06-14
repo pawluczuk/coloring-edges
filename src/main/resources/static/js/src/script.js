@@ -1,7 +1,6 @@
 (function(d3, $, _) {
     function enableD3JS(fileName, selector, response) {
         "use strict";
-
         var colors = response.edgeWithMaxColor.color;
         var nodesNo = response.vertices.length;
 
@@ -58,7 +57,7 @@
                 source: d.SourceVertex,
                 target: d.DestinationVertex,
                 color: d.Color
-            }
+            };
         }, function(error, graph) {
             if (error) throw error;
 
@@ -153,11 +152,17 @@
             } else {
                 picBox.innerHTML = '<div class="col-md-12">' +
                     '<a class="btn btn-warning" href="/output" role="button">Download</a>' +
+                    '<a class="btn btn-warning" href="/output_txt" role="button">Statistics</a>' +
                     'Number of vertices: ' + response.vertices.length +
                     ' Number of edges: ' + response.edges.length +
                     ' Number of colors: ' + response.edgeWithMaxColor.color +
                     ' Delta(G): ' + response.deltaGraph + '</div>';
-                 enableD3JS('upload-dir/output.csv', '#picbox', response);
+
+                if (response.vertices.length < 500 ) {
+                    enableD3JS('output', '#picbox', response);
+                } else {
+                    picBox.innerHTML += "<p>Too many vertices, not drawing graph!</p>";
+                };
             }
         }
     });
